@@ -50,6 +50,28 @@ class expenseApiService {
       throw FetchDataException("No Internet Connection");
     }
   }
+
+  Future<dynamic> createExpense(
+      String title, double amount, String incomeOrexpense) async {
+    try {
+      String? token = await prefs.getToken();
+      http.Response res = await http.post(Uri.parse(endPoint),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+            'Authorization': 'Token $token'
+          },
+          body: jsonEncode(<String, dynamic>{
+            'title': title,
+            'amount': amount,
+            'incomeOrexpense': incomeOrexpense
+          }));
+
+      var responseBody = _returnResponse(res);
+      return expenseModel.fromMap(responseBody);
+    } on SocketException {
+      throw FetchDataException("No Internet Connection");
+    }
+  }
 }
 
 dynamic _returnResponse(http.Response response) {
@@ -58,9 +80,14 @@ dynamic _returnResponse(http.Response response) {
       var responseJson = json.decode(response.body.toString());
       print(responseJson);
       return responseJson;
+    case 201:
+      var responseJson = json.decode(response.body.toString());
+      print(responseJson);
+      return responseJson;
     case 400:
       throw BadRequestException(response.body.toString());
     case 401:
+      throw BadRequestException(response.body.toString());
     case 403:
       throw UnauthorisedException(response.body.toString());
     case 500:

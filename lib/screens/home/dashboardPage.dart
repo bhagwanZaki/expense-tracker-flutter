@@ -1,5 +1,6 @@
 import 'package:expense_tracker_app/bloc/dashboardBloc.dart';
 import 'package:expense_tracker_app/bloc/expenseBloc.dart';
+import 'package:expense_tracker_app/constants/routes.dart';
 import 'package:expense_tracker_app/model/dashboardModel.dart';
 import 'package:expense_tracker_app/model/profileModel.dart';
 import 'package:expense_tracker_app/response/dashboardApiResponse.dart';
@@ -69,9 +70,16 @@ class _DashboardPageState extends State<DashboardPage>
                                 textColor: Colors.black,
                               );
                             case Status.ERROR:
-                              return Center(
-                                child: Text(snapshot.data!.msg),
-                              );
+                              if (snapshot.data!.msg ==
+                                      'Unauthorised: {"detail":"Invalid token."}' ||
+                                  snapshot.data!.msg ==
+                                      'Invalid Request: {"detail":"Invalid token."}') {
+                                WidgetsBinding.instance?.addPostFrameCallback(
+                                  (_) => Navigator.pushReplacementNamed(
+                                      context, Routes.welcomeRoute),
+                                );
+                              }
+                              break;
                             default:
                               return Text("laoding");
                           }
@@ -148,7 +156,16 @@ class _DashboardPageState extends State<DashboardPage>
                               ],
                             );
                           case DashboardStatus.ERROR:
-                            return Text(snapshot.data!.msg);
+                            if (snapshot.data!.msg ==
+                                    'Unauthorised: {"detail":"Invalid token."}' ||
+                                snapshot.data!.msg ==
+                                    'Invalid Request: {"detail":"Invalid token."}') {
+                              WidgetsBinding.instance?.addPostFrameCallback(
+                                (_) => Navigator.pushReplacementNamed(
+                                    context, Routes.welcomeRoute),
+                              );
+                            }
+                            break;
                           default:
                             return Center(
                               child: Icon(

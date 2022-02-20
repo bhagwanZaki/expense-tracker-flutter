@@ -7,28 +7,47 @@ import 'package:expense_tracker_app/response/expenseApiResponse.dart';
 
 class ExpenseBloc {
   late ExpenseRepository _expenseRepository;
+
+  // controllers
   late StreamController<ExpenseApiResponse<List<expenseModel>>>
       _expenseListController;
   late StreamController<ExpenseApiResponse<profileModel>> _profileController;
 
+  late StreamController<ExpenseApiResponse<expenseModel>>
+      _expenseCreateController;
+
+  // stream sink
   StreamSink<ExpenseApiResponse<List<expenseModel>>> get expenseListSink =>
       _expenseListController.sink;
   StreamSink<ExpenseApiResponse<profileModel>> get profileSink =>
       _profileController.sink;
 
+  StreamSink<ExpenseApiResponse<expenseModel>> get expenseCreateSink =>
+      _expenseCreateController.sink;
+
+  // stream
   Stream<ExpenseApiResponse<List<expenseModel>>> get expenseListStream =>
       _expenseListController.stream;
   Stream<ExpenseApiResponse<profileModel>> get profileStream =>
       _profileController.stream;
 
+  Stream<ExpenseApiResponse<expenseModel>> get expenseCreateStream =>
+      _expenseCreateController.stream;
+
+  // constructor
+
   ExpenseBloc() {
     _expenseListController =
         StreamController<ExpenseApiResponse<List<expenseModel>>>();
     _profileController = StreamController<ExpenseApiResponse<profileModel>>();
+    _expenseCreateController =
+        StreamController<ExpenseApiResponse<expenseModel>>();
     _expenseRepository = ExpenseRepository();
     fetchExpenseList();
     profile();
   }
+
+  // functions
 
   fetchExpenseList() async {
     expenseListSink.add(ExpenseApiResponse.loading("Fetching data"));
@@ -52,8 +71,23 @@ class ExpenseBloc {
     }
   }
 
+  createExpense(String title, double amount, String incomeOrexpense) async {
+    expenseCreateSink.add(ExpenseApiResponse.loading("posting data"));
+    try {
+      expenseModel expenseCreateData = await _expenseRepository.createExpense(
+          title, amount, incomeOrexpense);
+      expenseCreateSink.add(ExpenseApiResponse.completed(expenseCreateData));
+    } catch (e) {
+      print("op");
+      print(e);
+      expenseCreateSink.add(ExpenseApiResponse.error(e.toString()));
+    }
+  }
+  // dispose
+
   dispose() {
     _expenseListController.close();
     _profileController.close();
+    _expenseCreateController.close();
   }
 }

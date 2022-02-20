@@ -214,17 +214,11 @@ class _LoginPageState extends State<LoginPage> {
 
                       case Status.COMPLETED:
                         WidgetsBinding.instance?.addPostFrameCallback((_) {
-                            pref.setToken(snapshot.data!.data.token);
+                          pref.setToken(snapshot.data!.data.token);
+                          pref.setUserName(snapshot.data!.data.user.username);
 
-                            Navigator.pushNamedAndRemoveUntil(
-                                context, Routes.baseRoute, (route) => false);
-                          // if (loading == false) {
-                          // }
-                          // if (loading) {
-                          //   setState(() {
-                          //     loading = false;
-                          //   });
-                          // }
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, Routes.baseRoute, (route) => false);
                         });
                         break;
 

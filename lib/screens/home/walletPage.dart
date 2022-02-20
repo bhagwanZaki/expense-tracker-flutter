@@ -3,6 +3,7 @@ import 'package:expense_tracker_app/constants/colors.dart';
 import 'package:expense_tracker_app/constants/routes.dart';
 import 'package:expense_tracker_app/model/expenseModel.dart';
 import 'package:expense_tracker_app/model/profileModel.dart';
+import 'package:expense_tracker_app/preferences/preference.dart';
 import 'package:expense_tracker_app/response/expenseApiResponse.dart';
 import 'package:expense_tracker_app/services/expenseApiService.dart';
 import 'package:expense_tracker_app/widgets/appBar.dart';
@@ -26,11 +27,18 @@ class _WalletPageState extends State<WalletPage>
   expenseApiService client = expenseApiService();
 
   ExpenseBloc? _bloc;
-
+  Preference prefs = Preference();
+  String? username = "";
   @override
   void initState() {
     super.initState();
     _bloc = ExpenseBloc();
+    getUsername();
+  }
+
+  getUsername() async {
+    username = await prefs.getUsername();
+    print(username);
   }
 
   Widget containerType(expenseModel data) {
@@ -102,11 +110,14 @@ class _WalletPageState extends State<WalletPage>
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text('Hey Zaki',
+                                        Text('Hey ' + username!,
                                             style: GoogleFonts.poppins(
                                                 fontSize: 22,
                                                 fontWeight: FontWeight.w500)),
-                                        Text('Wallet Cash 💵: '+snapshot.data!.data.amount.toString(),
+                                        Text(
+                                            'Wallet Cash 💵: ' +
+                                                snapshot.data!.data.amount
+                                                    .toString(),
                                             style: GoogleFonts.poppins(
                                                 fontSize: 28,
                                                 fontWeight: FontWeight.w500)),
@@ -118,9 +129,8 @@ class _WalletPageState extends State<WalletPage>
                             default:
                           }
                         }
-                      return Text("opo");
-                      }
-                      ),
+                        return Text("opo");
+                      }),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -141,7 +151,7 @@ class _WalletPageState extends State<WalletPage>
                                 context: context,
                                 builder: (BuildContext context) {
                                   return CreateExpense();
-                                })
+                                }).then((value) => _bloc?.fetchExpenseList())
                           },
                           child: Text(
                             "Add New",
@@ -160,7 +170,8 @@ class _WalletPageState extends State<WalletPage>
                           case Status.LOADING:
                             return CircularProgressIndicator();
                           case Status.COMPLETED:
-                            List<expenseModel>? expenses = snapshot.data?.data;
+                            List<expenseModel>? expenses =
+                                snapshot.data?.data.reversed.toList();
                             return Column(children: [
                               ListView.builder(
                                   physics: NeverScrollableScrollPhysics(),
@@ -172,7 +183,9 @@ class _WalletPageState extends State<WalletPage>
                             ]);
                           case Status.ERROR:
                             if (snapshot.data!.msg ==
-                                'Unauthorised: {"detail":"Invalid token."}') {
+                                    'Unauthorised: {"detail":"Invalid token."}' ||
+                                snapshot.data!.msg ==
+                                    'Invalid Request: {"detail":"Invalid token."}') {
                               WidgetsBinding.instance?.addPostFrameCallback(
                                 (_) => Navigator.pushReplacementNamed(
                                     context, Routes.welcomeRoute),

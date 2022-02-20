@@ -9,6 +9,11 @@ class ExpenseRepository {
     final response = await _service.getExpense();
     return response;
   }
+
+  Future<expenseModel> createExpense(String title, double amount, String incomeOrexpense) async{
+    final response = await _service.createExpense(title,amount,incomeOrexpense);
+    return response;
+  }
   
   Future<profileModel> getProfile() async {
     final response = await _service.profile();

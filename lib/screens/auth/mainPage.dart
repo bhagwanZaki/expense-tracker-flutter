@@ -67,7 +67,7 @@ class _MainPageState extends State<MainPage> {
                   case Status.ERROR:
                     
                     if (snapshot.data!.msg ==
-                        'Unauthorised: {"detail":"Invalid token."}') {
+                        'Unauthorised: {"detail":"Invalid token."}' || snapshot.data!.msg == 'Invalid Request: {"detail":"Invalid token."}') {
                       WidgetsBinding.instance?.addPostFrameCallback(
                         (_) => Navigator.pushReplacementNamed(
                             context, Routes.welcomeRoute),

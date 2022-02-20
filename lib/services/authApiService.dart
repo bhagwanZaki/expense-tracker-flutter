@@ -46,8 +46,6 @@ class AuthApiService {
       throw FetchDataException("No Internet Connection");
     }
   }
-
-  
 }
 
 dynamic _returnResponse(http.Response response) {
@@ -59,6 +57,7 @@ dynamic _returnResponse(http.Response response) {
     case 400:
       throw BadRequestException(response.body.toString());
     case 401:
+      throw BadRequestException(response.body.toString());
     case 403:
       throw UnauthorisedException(response.body.toString());
     case 500:

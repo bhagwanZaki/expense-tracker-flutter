@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:expense_tracker_app/model/authModel.dart';
 import 'package:expense_tracker_app/model/loginModel.dart';
-import 'package:expense_tracker_app/model/profileModel.dart';
 import 'package:expense_tracker_app/repository/authRepository.dart';
 import 'package:expense_tracker_app/response/authApiResponse.dart';
 
