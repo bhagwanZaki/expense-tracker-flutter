@@ -29,6 +29,7 @@ class _WalletPageState extends State<WalletPage>
   ExpenseBloc? _bloc;
   Preference prefs = Preference();
   String? username = "";
+  List<expenseModel>? expenses = [];
   @override
   void initState() {
     super.initState();
@@ -38,22 +39,35 @@ class _WalletPageState extends State<WalletPage>
 
   getUsername() async {
     username = await prefs.getUsername();
-    print(username);
   }
 
-  Widget containerType(expenseModel data) {
-    print(data.incomeOrexpense);
+  removeCardFromList(index) {
+    print(index);
+    print(expenses!.length);
+    _bloc?.fetchExpenseList();
+    _bloc?.profile();
+    print('00');
+    print(expenses!.length);
+  }
+
+  Widget containerType(expenseModel data, int index) {
     if (data.incomeOrexpense == "expense") {
       return ExpenseRecordItem(
         data: data,
+        index: index,
+        removeCardFromList: removeCardFromList,
       );
     } else if (data.incomeOrexpense == "income") {
       return IncomeRecordItem(
         data: data,
+        index: index,
+        removeCardFromList: removeCardFromList,
       );
     } else {
       return SavingRecordItem(
         data: data,
+        index: index,
+        removeCardFromList: removeCardFromList,
       );
     }
   }
@@ -61,7 +75,6 @@ class _WalletPageState extends State<WalletPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    print("wallet");
     return Scaffold(
       extendBody: true,
       resizeToAvoidBottomInset: false,
@@ -91,7 +104,8 @@ class _WalletPageState extends State<WalletPage>
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(16.0),
-                                    child: CircularProgressIndicator(),
+                                    child: Center(
+                                        child: CircularProgressIndicator()),
                                   ),
                                 ),
                               );
@@ -151,7 +165,10 @@ class _WalletPageState extends State<WalletPage>
                                 context: context,
                                 builder: (BuildContext context) {
                                   return CreateExpense();
-                                }).then((value) => _bloc?.fetchExpenseList())
+                                }).then((value) {
+                              _bloc?.profile();
+                              _bloc?.fetchExpenseList();
+                            })
                           },
                           child: Text(
                             "Add New",
@@ -165,22 +182,33 @@ class _WalletPageState extends State<WalletPage>
                   StreamBuilder<ExpenseApiResponse<List<expenseModel>>>(
                     stream: _bloc?.expenseListStream,
                     builder: (context, snapshot) {
+                      print(snapshot.hasData);
                       if (snapshot.hasData) {
                         switch (snapshot.data?.status) {
                           case Status.LOADING:
-                            return CircularProgressIndicator();
+                            return Center(child: CircularProgressIndicator());
                           case Status.COMPLETED:
-                            List<expenseModel>? expenses =
-                                snapshot.data?.data.reversed.toList();
-                            return Column(children: [
-                              ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  // scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  itemCount: expenses?.length,
-                                  itemBuilder: (context, index) =>
-                                      containerType(expenses![index])),
-                            ]);
+                            expenses = snapshot.data?.data.reversed.toList();
+                            if (expenses!.length != 0) {
+                              return Column(children: [
+                                ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    // scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    itemCount: expenses?.length,
+                                    itemBuilder: (context, index) =>
+                                        containerType(expenses![index], index)),
+                              ]);
+                            } else {
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 20.0),
+                                child: Center(
+                                    child: Text("No Records Added",
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w300))),
+                              );
+                            }
                           case Status.ERROR:
                             if (snapshot.data!.msg ==
                                     'Unauthorised: {"detail":"Invalid token."}' ||

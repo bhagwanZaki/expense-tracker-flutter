@@ -43,14 +43,17 @@ class loginModel {
     return loginModel(
       user: authModel.fromMap(map['user']),
       token: map['token'] ?? '',
-      profile: profileModel.fromMap(map['profile'][0]),
+      profile: map['profile'].length != 0
+          ? profileModel.fromMap(map['profile'][0])
+          : profileModel.fromMap({'id':0,'user_linked_id':0,'amount':0}),
       profileExists: map['profileExists'] ?? false,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory loginModel.fromJson(String source) => loginModel.fromMap(json.decode(source));
+  factory loginModel.fromJson(String source) =>
+      loginModel.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -60,19 +63,19 @@ class loginModel {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is loginModel &&
-      other.user == user &&
-      other.token == token &&
-      other.profile == profile &&
-      other.profileExists == profileExists;
+        other.user == user &&
+        other.token == token &&
+        other.profile == profile &&
+        other.profileExists == profileExists;
   }
 
   @override
   int get hashCode {
     return user.hashCode ^
-      token.hashCode ^
-      profile.hashCode ^
-      profileExists.hashCode;
+        token.hashCode ^
+        profile.hashCode ^
+        profileExists.hashCode;
   }
 }

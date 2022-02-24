@@ -33,17 +33,12 @@ class _CreateExpenseState extends State<CreateExpense> {
   TextEditingController amount = TextEditingController();
 
   createExpense(BuildContext context, String note, String? incomeOrexpense,
-      double amount) {
+      String amount) {
     FocusScope.of(context).requestFocus(FocusNode());
     if (_formKey.currentState!.validate() && incomeOrexpense != null) {
-      print("valid");
-      print(note);
-      print(incomeOrexpense);
-      print(amount);
-      print("=========");
-      _bloc?.createExpense(note, amount, incomeOrexpense);
+      _bloc?.createExpense(note, double.parse(amount), incomeOrexpense);
     } else {
-      print("not calid");
+      return null;
     }
   }
 
@@ -67,8 +62,8 @@ class _CreateExpenseState extends State<CreateExpense> {
         shape: RoundedRectangleBorder(
             side: BorderSide(color: AppColors.purpleColor),
             borderRadius: BorderRadius.circular(15)),
-        onPressed: () => createExpense(
-            context, note.text, dropdownValue, double.parse(amount.text)),
+        onPressed: () =>
+            createExpense(context, note.text, dropdownValue, amount.text),
         child: Text(
           "Add",
           style: GoogleFonts.poppins(fontSize: 20, color: Colors.white),
@@ -179,12 +174,9 @@ class _CreateExpenseState extends State<CreateExpense> {
                 stream: _bloc?.expenseCreateStream,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    print(snapshot.data?.status);
                     switch (snapshot.data?.status) {
                       case Status.LOADING:
                         WidgetsBinding.instance?.addPostFrameCallback((_) {
-                          print("loading");
-
                           if (loading == false) {
                             setState(() {
                               loading = true;
@@ -201,7 +193,6 @@ class _CreateExpenseState extends State<CreateExpense> {
                             setState(() {
                               loading = false;
                             });
-                            print("completed");
                             Navigator.of(context).pop();
                           }
                         });
@@ -209,7 +200,6 @@ class _CreateExpenseState extends State<CreateExpense> {
 
                       case Status.ERROR:
                         WidgetsBinding.instance?.addPostFrameCallback((_) {
-                          print("Error");
                           if (loading == false) {
                             if (snapshot.data!.msg ==
                                 'Invalid Request: ["Expense cannot be greater than total amount"]') {

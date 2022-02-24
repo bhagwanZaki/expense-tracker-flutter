@@ -42,8 +42,7 @@ class LineChartWidget extends StatelessWidget {
       maxY = largeNumber(saving_graph_data.reduce(max),
           income_graph_data.reduce(max), expense_graph_data.reduce(max));
     }
-    print("--");
-    print(maxX);
+    
 
     return LineChart(
       LineChartData(

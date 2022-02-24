@@ -16,6 +16,9 @@ class ExpenseBloc {
   late StreamController<ExpenseApiResponse<expenseModel>>
       _expenseCreateController;
 
+  late StreamController<ExpenseDeleteApiResponse<dynamic>>
+      _expenseDeleteController;
+
   // stream sink
   StreamSink<ExpenseApiResponse<List<expenseModel>>> get expenseListSink =>
       _expenseListController.sink;
@@ -24,6 +27,9 @@ class ExpenseBloc {
 
   StreamSink<ExpenseApiResponse<expenseModel>> get expenseCreateSink =>
       _expenseCreateController.sink;
+
+  StreamSink<ExpenseDeleteApiResponse<dynamic>> get expenseDeleteSink =>
+      _expenseDeleteController.sink;
 
   // stream
   Stream<ExpenseApiResponse<List<expenseModel>>> get expenseListStream =>
@@ -34,6 +40,9 @@ class ExpenseBloc {
   Stream<ExpenseApiResponse<expenseModel>> get expenseCreateStream =>
       _expenseCreateController.stream;
 
+  Stream<ExpenseDeleteApiResponse<dynamic>> get expenseDeleteStream =>
+      _expenseDeleteController.stream;
+
   // constructor
 
   ExpenseBloc() {
@@ -42,7 +51,12 @@ class ExpenseBloc {
     _profileController = StreamController<ExpenseApiResponse<profileModel>>();
     _expenseCreateController =
         StreamController<ExpenseApiResponse<expenseModel>>();
+
+    _expenseDeleteController =
+        StreamController<ExpenseDeleteApiResponse<dynamic>>();
+
     _expenseRepository = ExpenseRepository();
+
     fetchExpenseList();
     profile();
   }
@@ -56,7 +70,6 @@ class ExpenseBloc {
       expenseListSink.add(ExpenseApiResponse.completed(expenseDatas));
     } catch (e) {
       expenseListSink.add(ExpenseApiResponse.error(e.toString()));
-      print(e);
     }
   }
 
@@ -66,7 +79,6 @@ class ExpenseBloc {
       profileModel profileData = await _expenseRepository.getProfile();
       profileSink.add(ExpenseApiResponse.completed(profileData));
     } catch (e) {
-      print(e);
       profileSink.add(ExpenseApiResponse.error(e.toString()));
     }
   }
@@ -78,9 +90,17 @@ class ExpenseBloc {
           title, amount, incomeOrexpense);
       expenseCreateSink.add(ExpenseApiResponse.completed(expenseCreateData));
     } catch (e) {
-      print("op");
-      print(e);
       expenseCreateSink.add(ExpenseApiResponse.error(e.toString()));
+    }
+  }
+
+  deleteExpense(int id) async {
+    expenseDeleteSink.add(ExpenseDeleteApiResponse.loading("deleting data"));
+    try {
+      dynamic expenseData = await _expenseRepository.deleteExpense(id);
+      expenseDeleteSink.add(ExpenseDeleteApiResponse.completed(expenseData));
+    } catch (e) {
+      expenseDeleteSink.add(ExpenseDeleteApiResponse.error(e.toString()));
     }
   }
   // dispose
@@ -89,5 +109,6 @@ class ExpenseBloc {
     _expenseListController.close();
     _profileController.close();
     _expenseCreateController.close();
+    _expenseDeleteController.close();
   }
 }

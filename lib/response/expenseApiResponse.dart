@@ -13,4 +13,19 @@ class ExpenseApiResponse<T> {
   }
 }
 
+class ExpenseDeleteApiResponse<T> {
+  late Status status;
+  late String msg;
+
+  ExpenseDeleteApiResponse.loading(this.msg) : status = Status.LOADING;
+  ExpenseDeleteApiResponse.completed(this.msg) : status = Status.COMPLETED;
+  ExpenseDeleteApiResponse.error(this.msg) : status = Status.ERROR;
+
+  @override
+  String toString() {
+    return "Status : $status \n Message : $msg";
+  }
+}
+
 enum Status { LOADING, COMPLETED, ERROR }
+

@@ -1,4 +1,3 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:expense_tracker_app/constants/colors.dart';
 import 'package:expense_tracker_app/screens/home/dashboardPage.dart';
 import 'package:expense_tracker_app/screens/home/signoutPage.dart';

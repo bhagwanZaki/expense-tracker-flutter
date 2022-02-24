@@ -30,7 +30,6 @@ class _LoginPageState extends State<LoginPage> {
   login(BuildContext context, String username, String password) {
     FocusScope.of(context).requestFocus(FocusNode());
     if (_formKey.currentState!.validate()) {
-      print("login");
       _bloc?.login(username, password);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -48,10 +47,6 @@ class _LoginPageState extends State<LoginPage> {
         shape: RoundedRectangleBorder(
             side: BorderSide(color: AppColors.purpleColor),
             borderRadius: BorderRadius.circular(15)),
-        // onPressed: () => {
-        //   Navigator.pushNamedAndRemoveUntil(
-        //       context, Routes.baseRoute, (route) => false)
-        // },
         onPressed: () => login(context, username.text, password.text),
         child: Text(
           "Login",
@@ -65,22 +60,18 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: const EdgeInsets.only(top: 40.0, left: 20.0, right: 20.0),
       child: MaterialButton(
-        color: AppColors.purpleColor,
-        minWidth: double.infinity,
-        height: 55,
-        shape: RoundedRectangleBorder(
-            side: BorderSide(color: AppColors.purpleColor),
-            borderRadius: BorderRadius.circular(15)),
-        // onPressed: () => {
-        //   Navigator.pushNamedAndRemoveUntil(
-        //       context, Routes.baseRoute, (route) => false)
-        // },
-        onPressed: () => {},
-        child: Text(
-          "Loading",
-          style: GoogleFonts.poppins(fontSize: 20, color: Colors.white),
-        ),
-      ),
+          color: AppColors.purpleColor,
+          minWidth: double.infinity,
+          height: 55,
+          shape: RoundedRectangleBorder(
+              side: BorderSide(color: AppColors.purpleColor),
+              borderRadius: BorderRadius.circular(15)),
+          // onPressed: () => {
+          //   Navigator.pushNamedAndRemoveUntil(
+          //       context, Routes.baseRoute, (route) => false)
+          // },
+          onPressed: () => {},
+          child: CircularProgressIndicator()),
     );
   }
 
@@ -200,7 +191,6 @@ class _LoginPageState extends State<LoginPage> {
                 stream: _bloc?.loginStream,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    print(snapshot.data?.status);
                     switch (snapshot.data?.status) {
                       case Status.LOADING:
                         WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -214,16 +204,30 @@ class _LoginPageState extends State<LoginPage> {
 
                       case Status.COMPLETED:
                         WidgetsBinding.instance?.addPostFrameCallback((_) {
-                          pref.setToken(snapshot.data!.data.token);
-                          pref.setUserName(snapshot.data!.data.user.username);
-
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, Routes.baseRoute, (route) => false);
+                          if (loading) {
+                            setState(() {
+                              loading = false;
+                            });
+                          }
+                          if (loading == false){
+                          
+                            pref.setToken(snapshot.data!.data.token);
+                            pref.setUserName(snapshot.data!.data.user.username);
+                            print(snapshot.data!.data.profileExists);
+                            if (snapshot.data!.data.profileExists == true) {
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, Routes.baseRoute, (route) => false);
+                            } else {
+                              Navigator.pushReplacementNamed(
+                                  context, Routes.profileRoute);
+                            }
+                          }
                         });
                         break;
 
                       case Status.ERROR:
                         WidgetsBinding.instance?.addPostFrameCallback((_) {
+                          print(snapshot.data!.msg.toString());
                           if (loading == false) {
                             if (snapshot.data!.msg ==
                                 'Invalid Request: {"non_field_errors":["Incorrect Credentials"]}') {
@@ -241,6 +245,8 @@ class _LoginPageState extends State<LoginPage> {
                             });
                           }
                         });
+                        break;
+                      default:
                         break;
                     }
                   }

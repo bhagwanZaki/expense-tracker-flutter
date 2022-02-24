@@ -16,7 +16,6 @@ class expenseApiService {
   Future<dynamic> getExpense() async {
     try {
       String? token = await prefs.getToken();
-      print(token);
       http.Response res = await http.get(Uri.parse(endPoint),
           headers: <String, String>{
             'Content-Type': 'application/json',
@@ -72,18 +71,34 @@ class expenseApiService {
       throw FetchDataException("No Internet Connection");
     }
   }
+
+  Future<dynamic> deleteExpense(int id) async {
+    try {
+      String? token = await prefs.getToken();
+
+      http.Response res = await http.delete(Uri.parse(endPoint + "$id/"),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+            'Authorization': 'Token $token'
+          });
+      var responseBody = _returnResponse(res);
+      return responseBody;
+    } on SocketException {
+      throw FetchDataException("No Internet Connection");
+    }
+  }
 }
 
 dynamic _returnResponse(http.Response response) {
   switch (response.statusCode) {
     case 200:
       var responseJson = json.decode(response.body.toString());
-      print(responseJson);
       return responseJson;
     case 201:
       var responseJson = json.decode(response.body.toString());
-      print(responseJson);
       return responseJson;
+    case 204:
+      return "true";
     case 400:
       throw BadRequestException(response.body.toString());
     case 401:

@@ -47,7 +47,6 @@ class _MainPageState extends State<MainPage> {
             stream: _bloc?.authStream,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                print(snapshot.data?.status);
                 switch (snapshot.data?.status) {
                   case Status.LOADING:
                     return Expanded(
@@ -65,15 +64,17 @@ class _MainPageState extends State<MainPage> {
 
                     break;
                   case Status.ERROR:
-                    
                     if (snapshot.data!.msg ==
-                        'Unauthorised: {"detail":"Invalid token."}' || snapshot.data!.msg == 'Invalid Request: {"detail":"Invalid token."}') {
+                            'Unauthorised: {"detail":"Invalid token."}' ||
+                        snapshot.data!.msg ==
+                            'Invalid Request: {"detail":"Invalid token."}' || snapshot.data!.msg == 'Invalid Request: {"detail":"Invalid token header. No credentials provided."}') {
                       WidgetsBinding.instance?.addPostFrameCallback(
                         (_) => Navigator.pushReplacementNamed(
                             context, Routes.welcomeRoute),
                       );
                       break;
                     } else {
+                      print(snapshot.data!.msg);
                       return Expanded(
                           child: Center(
                         child: Icon(

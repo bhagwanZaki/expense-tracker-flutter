@@ -29,7 +29,6 @@ class DashboardBloc {
       DashboardModel dashboardData = await _dashboardRepository.getDashboard();
       dashboardSink.add(DashboardApiResponse.completed(dashboardData));
     } catch (e) {
-      print(e);
       dashboardSink.add(DashboardApiResponse.error(e.toString()));
     }
   }

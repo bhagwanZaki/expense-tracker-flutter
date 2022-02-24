@@ -10,13 +10,20 @@ class ExpenseRepository {
     return response;
   }
 
-  Future<expenseModel> createExpense(String title, double amount, String incomeOrexpense) async{
-    final response = await _service.createExpense(title,amount,incomeOrexpense);
+  Future<expenseModel> createExpense(
+      String title, double amount, String incomeOrexpense) async {
+    final response =
+        await _service.createExpense(title, amount, incomeOrexpense);
     return response;
   }
-  
+
   Future<profileModel> getProfile() async {
     final response = await _service.profile();
+    return response;
+  }
+
+  Future<dynamic> deleteExpense(int id) async {
+    final response = await _service.deleteExpense(id);
     return response;
   }
 }

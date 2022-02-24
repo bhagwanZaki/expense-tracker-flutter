@@ -34,7 +34,6 @@ class _DashboardPageState extends State<DashboardPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    print("dashboard");
     return Scaffold(
       body: SafeArea(
         child: RefreshIndicator(
