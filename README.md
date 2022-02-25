@@ -1,16 +1,31 @@
-# expense_tracker_app
+# Floran : Expense Tracker
 
-A new Flutter project.
+Expense Tracker helps you keep an accurate record of your money inflow and outflow.
 
-## Getting Started
+This app is designed with the goal for user to efficiently start their money track without the complex setup like other apps in the market. 
 
-This project is a starting point for a Flutter application.
+## Stack used
 
-A few resources to get you started if this is your first Flutter project:
+<ul>
+  <li> <a href="https://floran-expense-tracker.netlify.app/">Frontend (PWA) : </a> React.js | Redux | Service Worker | Bootstrap  
+  <li> <a href="https://floran-expense-tracker.herokuapp.com/">Backend : </a> Django | Django Rest Framework | Knox authentication | Postgres
+  <li> Native Mobile App : Flutter | shared_preferences | fl_chart | http
+</ul>
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Features available:
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<ul>
+<li> Add or delete new records
+<li> Interactive dashboard
+<li> Stores your data on cloud
+</ul>
+
+## Upcoming Features available:
+
+<ul>
+<li> Multiple wallet
+<li> Shared wallet
+<li> Improving dashboard service
+<li> Adding loan tracker
+  
+</ul>
