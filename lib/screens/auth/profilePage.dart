@@ -139,7 +139,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           break;
 
                         case Status.COMPLETED:
-                          print("opps");
                           WidgetsBinding.instance?.addPostFrameCallback((_) {
                             Navigator.pushNamedAndRemoveUntil(
                                 context, Routes.baseRoute, (route) => false);
@@ -148,7 +147,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
                         case Status.ERROR:
                           WidgetsBinding.instance?.addPostFrameCallback((_) {
-                            print(snapshot.data!.msg);
                             if (loading) {
                               setState(() {
                                 loading = false;

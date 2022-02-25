@@ -87,11 +87,8 @@ class AuthBloc {
   createProfile(double amount) async {
     profileSink.add(AuthResponse.loading("creating profile"));
     try {
-      print("9092");
       createProfileModel profileData = await _authRepository.createProfile(amount);
-      print("9090");
       profileSink.add(AuthResponse.completed(profileData));
-      print("9091");
     } catch (e) {
       profileSink.add(AuthResponse.error(e.toString()));
     }

@@ -87,16 +87,18 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        brightness: Brightness.light,
-        backgroundColor: Colors.white,
+        // brightness: Brightness.light,
+        // backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () => {Navigator.pop(context)},
           icon: Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.black,
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.black
+                : Colors.white,
           ),
         ),
       ),
@@ -176,17 +178,17 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   loading ? loadingBtn() : loginBtn(),
-                  InkWell(
-                    onTap: () => {},
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 15.0, bottom: 10.0),
-                      child: Center(
-                          child: Text(
-                        "Forget Password",
-                        style: GoogleFonts.poppins(fontSize: 15.0),
-                      )),
-                    ),
-                  ),
+                  // InkWell(
+                  //   onTap: () => {},
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.only(top: 15.0, bottom: 10.0),
+                  //     child: Center(
+                  //         child: Text(
+                  //       "Forget Password",
+                  //       style: GoogleFonts.poppins(fontSize: 15.0),
+                  //     )),
+                  //   ),
+                  // ),
                 ],
               ),
               StreamBuilder<AuthResponse<loginModel>>(
@@ -214,7 +216,6 @@ class _LoginPageState extends State<LoginPage> {
                           if (loading == false) {
                             pref.setToken(snapshot.data!.data.token);
                             pref.setUserName(snapshot.data!.data.user.username);
-                            print(snapshot.data!.data.profileExists);
                             if (snapshot.data!.data.profileExists == true) {
                               Navigator.pushNamedAndRemoveUntil(
                                   context, Routes.baseRoute, (route) => false);
@@ -228,7 +229,6 @@ class _LoginPageState extends State<LoginPage> {
 
                       case Status.ERROR:
                         WidgetsBinding.instance?.addPostFrameCallback((_) {
-                          print(snapshot.data!.msg.toString());
                           if (loading == false) {
                             if (snapshot.data!.msg ==
                                 'Invalid Request: {"non_field_errors":["Incorrect Credentials"]}') {

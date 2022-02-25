@@ -42,7 +42,6 @@ class LineChartWidget extends StatelessWidget {
       maxY = largeNumber(saving_graph_data.reduce(max),
           income_graph_data.reduce(max), expense_graph_data.reduce(max));
     }
-    
 
     return LineChart(
       LineChartData(
@@ -67,33 +66,36 @@ class LineChartWidget extends StatelessWidget {
           lineBarsData: [
             LineChartBarData(
                 colors: [const Color(0xffff5252)],
-                isCurved: true,
+                isCurved: false,
                 isStrokeCapRound: true,
-                curveSmoothness: 0.5,
+                curveSmoothness: 0.2,
                 dotData: FlDotData(show: false),
                 belowBarData: BarAreaData(show: false),
-                spots: List.generate(expense_graph_data.length, (i){
-                  return FlSpot(dayList[i].toDouble(),expense_graph_data[i].toDouble());
+                spots: List.generate(expense_graph_data.length, (i) {
+                  return FlSpot(
+                      dayList[i].toDouble(), expense_graph_data[i].toDouble());
                 })),
             LineChartBarData(
                 colors: [const Color(0xff448AFF)],
-                isCurved: true,
+                isCurved: false,
                 isStrokeCapRound: true,
-                curveSmoothness: 0.5,
+                curveSmoothness: 0.2,
                 dotData: FlDotData(show: false),
                 belowBarData: BarAreaData(show: false),
-                spots: List.generate(saving_graph_data.length, (i){
-                  return FlSpot(dayList[i].toDouble(),saving_graph_data[i].toDouble());
+                spots: List.generate(saving_graph_data.length, (i) {
+                  return FlSpot(
+                      dayList[i].toDouble(), saving_graph_data[i].toDouble());
                 })),
             LineChartBarData(
                 colors: [const Color(0xff4caf50)],
-                isCurved: true,
+                isCurved: false,
                 isStrokeCapRound: true,
-                curveSmoothness: 0.5,
+                curveSmoothness: 0.2,
                 dotData: FlDotData(show: false),
                 belowBarData: BarAreaData(show: false),
-                spots: List.generate(income_graph_data.length, (i){
-                  return FlSpot(dayList[i].toDouble(),income_graph_data[i].toDouble());
+                spots: List.generate(income_graph_data.length, (i) {
+                  return FlSpot(
+                      dayList[i].toDouble(), income_graph_data[i].toDouble());
                 })),
           ]),
       swapAnimationDuration: const Duration(milliseconds: 250),

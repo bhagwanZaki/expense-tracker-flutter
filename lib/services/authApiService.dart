@@ -43,7 +43,6 @@ class AuthApiService {
               }));
 
       var responseBody = _returnResponse(res);
-      print(responseBody);
       return loginModel.fromMap(responseBody);
     } on SocketException {
       throw FetchDataException("No Internet Connection");
@@ -83,7 +82,6 @@ class AuthApiService {
           body: jsonEncode(<String, double>{'amount': amount}));
 
       var responseBody = _returnResponse(res);
-      print(responseBody[0]);
       return createProfileModel.fromMap(responseBody);
     } on SocketException {
       throw FetchDataException("No Internet Connection");

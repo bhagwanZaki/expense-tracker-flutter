@@ -5,6 +5,7 @@ import 'package:expense_tracker_app/screens/auth/profilePage.dart';
 import 'package:expense_tracker_app/screens/auth/registerPage.dart';
 import 'package:expense_tracker_app/screens/auth/welcomePage.dart';
 import 'package:expense_tracker_app/screens/home/basePage.dart';
+import 'package:expense_tracker_app/themes/themeData.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,9 +18,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      themeMode: ThemeMode.system,
+      theme: Themes.lightTheme(context),
+      darkTheme: Themes.darkTheme(context),
       routes: {
         Routes.loginRoute: (context) => LoginPage(),
         Routes.welcomeRoute: (context) => WelcomePage(),

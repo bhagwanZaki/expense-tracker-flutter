@@ -89,7 +89,9 @@ class _IncomeRecordItemState extends State<IncomeRecordItem> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
-        color: Colors.green,
+        color: Theme.of(context).brightness == Brightness.light
+            ? AppColors.greenColor
+            : AppColors.darkgreenColor,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(

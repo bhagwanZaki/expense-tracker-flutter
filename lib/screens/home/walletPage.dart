@@ -42,12 +42,8 @@ class _WalletPageState extends State<WalletPage>
   }
 
   removeCardFromList(index) {
-    print(index);
-    print(expenses!.length);
     _bloc?.fetchExpenseList();
     _bloc?.profile();
-    print('00');
-    print(expenses!.length);
   }
 
   Widget containerType(expenseModel data, int index) {
@@ -182,7 +178,6 @@ class _WalletPageState extends State<WalletPage>
                   StreamBuilder<ExpenseApiResponse<List<expenseModel>>>(
                     stream: _bloc?.expenseListStream,
                     builder: (context, snapshot) {
-                      print(snapshot.hasData);
                       if (snapshot.hasData) {
                         switch (snapshot.data?.status) {
                           case Status.LOADING:

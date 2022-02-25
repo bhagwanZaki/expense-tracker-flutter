@@ -17,7 +17,9 @@ class WelcomePage extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(height: 40),
-                  Text("Welcome", style: GoogleFonts.poppins(fontSize: 50)),
+                  Text("Welcome",
+                      style: GoogleFonts.poppins(
+                          fontSize: 50, color: Colors.black)),
                   Padding(
                     padding: const EdgeInsets.only(
                         top: 20.0, right: 10.0, left: 10.0),
@@ -29,8 +31,9 @@ class WelcomePage extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 30.0, bottom: 30.0),
-                    child: Text("Track budget easily",
-                        style: GoogleFonts.poppins(fontSize: 20)),
+                    child: Text("Track your budget easily",
+                        style: GoogleFonts.poppins(
+                            fontSize: 20, color: Colors.black87)),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0, right: 20.0),

@@ -25,8 +25,6 @@ class AuthRepository {
 
   Future<createProfileModel> createProfile(double amount) async {
     final response = await _service.createProfile(amount);
-    print("--");
-    print(response);
     return response;
   }
 

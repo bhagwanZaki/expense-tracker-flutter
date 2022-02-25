@@ -89,7 +89,9 @@ class _ExpenseRecordItemState extends State<ExpenseRecordItem> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
-        color: Colors.redAccent,
+        color: Theme.of(context).brightness == Brightness.light
+            ? AppColors.redColor
+            : AppColors.darkredColor,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(

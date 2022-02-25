@@ -74,7 +74,6 @@ class _MainPageState extends State<MainPage> {
                       );
                       break;
                     } else {
-                      print(snapshot.data!.msg);
                       return Expanded(
                           child: Center(
                         child: Icon(

@@ -91,7 +91,6 @@ class _RegisterPageState extends State<RegisterPage> {
     if (password == password2) {
       if (_formKey.currentState!.validate()) {
         _bloc?.register(username, password, email);
-        print("cali");
       }
     } else {
       ScaffoldMessenger.of(context)
@@ -138,7 +137,9 @@ class _RegisterPageState extends State<RegisterPage> {
             side: BorderSide(color: AppColors.purpleColor),
             borderRadius: BorderRadius.circular(15)),
         onPressed: () => {},
-        child: CircularProgressIndicator(color: Colors.white,),
+        child: CircularProgressIndicator(
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -146,17 +147,19 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         elevation: 0,
-        brightness: Brightness.light,
-        backgroundColor: Colors.white,
+        // brightness: Brightness.light,
+        // backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () => {Navigator.pop(context)},
           icon: Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.black,
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.black
+                : Colors.white,
           ),
         ),
       ),
@@ -236,19 +239,19 @@ class _RegisterPageState extends State<RegisterPage> {
                               WidgetsBinding.instance
                                   ?.addPostFrameCallback((_) {
                                 if (loading == false) {
-                                  print(snapshot.data!.msg);
                                   if (snapshot.data!.msg ==
                                       'Invalid Request: {"email":["Enter a valid email address."]}') {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                             content: Text(
                                                 "Enter a valid email address.")));
-                                  } 
-                                } else if(snapshot.data!.msg == 'Invalid Request: {"username":["A user with that username already exists."]}'){
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content: Text(
-                                                "Username already taken.")));
+                                  }
+                                } else if (snapshot.data!.msg ==
+                                    'Invalid Request: {"username":["A user with that username already exists."]}') {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content:
+                                              Text("Username already taken.")));
                                 }
                               });
                               WidgetsBinding.instance

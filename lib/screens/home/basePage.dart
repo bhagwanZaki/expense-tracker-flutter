@@ -4,7 +4,7 @@ import 'package:expense_tracker_app/screens/home/signoutPage.dart';
 import 'package:expense_tracker_app/screens/home/walletPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
+import 'package:flutter/services.dart';
 
 class BasePage extends StatefulWidget {
   const BasePage({Key? key}) : super(key: key);
@@ -50,19 +50,28 @@ class _BasePageState extends State<BasePage> with TickerProviderStateMixin {
     ];
 
     final screens = [DashboardPage(), WalletPage(), SignoutPage()];
-
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Theme.of(context).brightness == Brightness.light
+          ? AppColors.darkPurpleColor
+          : AppColors.darkpinkColor,
+    ));
     return Scaffold(
-        extendBody: true,
-        backgroundColor: Colors.transparent,
+        // extendBody: true,
         body: TabBarView(
           controller: tabController,
           children: [DashboardPage(), WalletPage(), SignoutPage()],
         ),
         bottomNavigationBar: Container(
-          decoration: BoxDecoration(color: AppColors.purpleColor),
+          decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.light
+                  ? AppColors.purpleColor
+                  : AppColors.black),
           child: TabBar(
             // indicatorColor: AppColors.purpleColor,
-            indicator: BoxDecoration(color: AppColors.darkPurpleColor),
+            indicator: BoxDecoration(
+                color: Theme.of(context).brightness == Brightness.light
+                    ? AppColors.darkPurpleColor
+                    : AppColors.darkpinkColor),
             controller: tabController,
             tabs: [
               Tab(
