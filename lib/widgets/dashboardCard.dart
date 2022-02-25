@@ -33,7 +33,7 @@ class DashboardCard extends StatelessWidget {
                   flex: 7,
                   child: Text(label,
                       style: GoogleFonts.poppins(
-                          fontSize: 30, color:textColor)),
+                          fontSize: 22, color:textColor)),
                 ),
                 Expanded(
                     flex: 3,

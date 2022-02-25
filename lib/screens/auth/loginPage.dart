@@ -71,7 +71,9 @@ class _LoginPageState extends State<LoginPage> {
           //       context, Routes.baseRoute, (route) => false)
           // },
           onPressed: () => {},
-          child: CircularProgressIndicator()),
+          child: CircularProgressIndicator(
+            color: AppColors.greyColor,
+          )),
     );
   }
 
@@ -209,8 +211,7 @@ class _LoginPageState extends State<LoginPage> {
                               loading = false;
                             });
                           }
-                          if (loading == false){
-                          
+                          if (loading == false) {
                             pref.setToken(snapshot.data!.data.token);
                             pref.setUserName(snapshot.data!.data.user.username);
                             print(snapshot.data!.data.profileExists);
